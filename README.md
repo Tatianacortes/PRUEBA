@@ -94,7 +94,118 @@ Simscape Multibody
 ![Figura de prueba](IMAGES/multibody.png)
 
 ---
+### Inercia Reflejada  
+---
+
+#### Acople Directo (Motor, Eje y Carga)
+
+Cuando el motor está acoplado directamente a la carga, el torque requerido es proporcional a la inercia de la carga:
+
+$T_m=J_{load}\,\ddot{\theta}_m$
+
+---
+
+#### Sistema con Engranajes (Motor, Transmisión y Carga)
+
+Para un sistema con engranajes, se parte del torque requerido por la carga:
+
+$T_l=J_{load}\,\ddot{\theta}_l$
+
+Aplicando la relación de radios:
+
+$\dfrac{r_l}{r_m}T_m=J_{load}\,\ddot{\theta}_l$
+
+Y considerando el desplazamiento tangencial:
+
+$r_l\,\theta_l=r_m\,\theta_m$
+
+Derivando dos veces respecto al tiempo:
+
+$r_l\,\ddot{\theta}_l=r_m\,\ddot{\theta}_m$
+
+Reemplazando en la ecuación del torque:
+
+$\dfrac{r_l}{r_m}T_m=J_{load}\,\dfrac{r_m}{r_l}\ddot{\theta}_m$
+
+Despejando $T_m$:
+
+$T_m=J_{load}\left(\dfrac{r_m}{r_l}\right)^2\ddot{\theta}_m$
+
+Dado que $N_{GB}=r_l/r_m$, entonces:
+
+**Inercia reflejada al motor:**
+
+$J_{ref}=J_{load}/N_{GB}^2$
+
+---
+
+### Torque Reflejado  
+---
+
+Según la conservación de potencia en la transmisión:
+
+$\dfrac{\omega_m}{\omega_l}=\dfrac{T_l}{T_m}$
+
+Despejando el torque en el motor:
+
+$T_m=\dfrac{\omega_l}{\omega_m}T_l$
+
+Y como $\dfrac{\omega_l}{\omega_m}=1/N_{GB}$, se obtiene:
+
+**Torque reflejado:**
+
+$T_m=\dfrac{T_l}{N_{GB}}$
+
+---
+
+### Consideraciones de Eficiencia  
+---
+
+La eficiencia de una transmisión se define como:
+
+$\eta=\dfrac{P_{output}}{P_{input}}$
+
+Donde $P=T\cdot\omega$, por lo tanto:
+
+$T_l\,\omega_l=\eta\,T_m\,\omega_m$
+
+Despejando el torque reflejado incluyendo eficiencia:
+
+$T_m=\dfrac{T_l}{\eta\,N_{GB}}$
+
+Y para la inercia reflejada:
+
+$J_{ref}=\dfrac{J_{load}}{\eta\,N_{GB}^2}$
+
+Los engranajes reales no son ideales; presentan pérdidas por fricción, juego mecánico o deformaciones. La eficiencia típica de una caja reductora comercial varía entre 90% y 95%, y debe ser proporcionada por el fabricante.
+
+---
+
+### Inercia Total Vista por el Motor  
+---
+
+Para un dimensionamiento adecuado del motor, se debe considerar la inercia total reflejada al eje del motor:
+
+$J_{total}=J_m+J_{\text{on motor shaft}}+J_{ref}$
+
+Donde:
+- $J_m$: Inercia del rotor del motor.  
+- $J_{\text{on motor shaft}}$: Inercia del acoplamiento, ejes y componentes montados directamente en el eje del motor.  
+- $J_{ref}$: Inercia reflejada de_
+---
 ### Ejemplo 
+#### 1. 
+![Figura de prueba](IMAGES/diagramamotor.png)  
+
+$J_\text{total} = J_m + J_\text{on motor shaft} + J_\text{ref}$
+
+$J_\text{on motor shaft} = J_\text{coupling} + J_\text{mg}$
+
+$J_\text{ref} = \frac{1}{\eta N_\text{GB}^2} \left[ J_\text{lg} + J_\text{load} \right]$
+
+$J_\text{total} = J_m + J_\text{coupling} + J_\text{mg} + \frac{1}{\eta N_\text{GB}^2} \left[ J_\text{lg} + J_\text{load} \right]$
+
+#### 2. 
 
 El Sistema en la figura usa un engranaje PN023 de Apex Dynamics. Este tiene 5:1 de relación, 0,15 Kg − cm2 reflejado a la entrada y 97% de eficiencia. El motor es un Quantum QB02301 NEMA tamaño 23 de Allied Motion Technologies. Este tiene 1,5x10−5 Kg − m2 de inercia en el rotor. Si la inercia de la carga es 10x10−4 Kg − m2. Encuentre la relación de inercia.
 
@@ -147,6 +258,18 @@ $J=m·r^2=(W_{belt}/(g·η))·r_{ip}^2$
 ### Torque reflejado:
 
 $T_{motor}=T_{carga}/(η·N_{BP})$
+
+---
+
+### Simulaciones
+
+Simulink  
+
+![Figura de prueba](IMAGES/simulink.png)
+
+Simscape Multibody
+
+![Figura de prueba](IMAGES/multibody.png)
 
 ---
 
